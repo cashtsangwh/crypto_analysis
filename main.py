@@ -9,7 +9,7 @@ sidebar = st.sidebar
 st.set_page_config(page_title="Cryptocurrecny Investment Analysis App", layout="wide")
 st.markdown("# Cryptocurrecny Investment Analysis App")
 number = sidebar.selectbox("Number of Cryptocurrency",options= list(range(1,16)), index=0)
-strategy = sidebar.selectbox("Choose Strategy",options= ["cross", "crossRSI"], index=0)
+strategy = sidebar.selectbox("Choose Strategy",options= ["cross", "crossRSI", "simple_buy_hold"], index=0)
 
 short = 0
 long = 0
@@ -62,7 +62,7 @@ if submit:
             st.pyplot(fig)
     
     ## 
-    st.markdown("### Strategy By Golden Cross and Death Cross")
+    st.markdown("### Strategy Information")
     total_profit, profit_histories, figures = cs.simulation(strategy=strategy,
                                                             start_year=test_start, 
                                                             end_year=test_end, 

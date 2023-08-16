@@ -69,31 +69,38 @@ class CryptoSimulator:
         figures = []
         
         for history in self.histories:
+            price_ts = history.iloc[:,0]
+            price_ts_require = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
             if strategy == "cross":
-                price_ts = history.iloc[:,0]
-                price_ts_require = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
                 strategy_df, fig = strategy_by_cross(price_ts_require, **kwargs)
-                figures.append(fig)
             elif strategy == "crossRSI":
-                price_ts = history.iloc[:,0]
-                price_ts_require = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
                 strategy_df, fig = strategy_by_cross_rsi(price_ts_require, **kwargs)
-                figures.append(fig)
+            elif strategy == "simple_buy_hold":
+                strategy_df, fig = strategy_by_simple_buy_and_hold(price_ts_require, **kwargs)
                 
+            figures.append(fig)               
             hold = False
             profit_rate = 1
             buy_price = 0
             profit_history = []
+            last_price = 0
             for i, row in strategy_df.iterrows():
                 if row["Signal"] == 1 and not hold:
                     buy_price = row["Price"]
                     hold = True
+                    last_price = row["Price"]
                 elif row["Signal"] == -1 and hold:
-                    profit_rate *= row["Price"]/buy_price
+                    profit_rate *= row["Price"]/last_price
                     hold = False
+                    last_price = row["Price"]
                 elif hold and row["Price"]/buy_price < (1-limit_loss):
-                    profit_rate *= row["Price"]/buy_price
+                    profit_rate *= row["Price"]/last_price
                     hold = False
+                    last_price = row["Price"]
+                elif hold:
+                    profit_rate *= row["Price"]/last_price
+                    last_price = row["Price"]
+
                 
                 profit_history.append(profit_rate)
 
