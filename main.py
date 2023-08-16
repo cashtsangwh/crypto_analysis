@@ -2,12 +2,21 @@ import streamlit as st
 from simulator import CryptoSimulator
 from matplotlib import pyplot as plt
 import numpy as np
-## Get historical Data
-
+import json
 
 
 sidebar = st.sidebar
 st.set_page_config(page_title="Cryptocurrecny Investment Analysis App", layout="wide")
+st.markdown("# Cryptocurrecny Investment Analysis App")
+number = sidebar.selectbox("Number of Cryptocurrency",options= list(range(1,16)), index=0)
+
+with open("./coins.json", 'r') as f:
+    top_100_coin_list = json.load(f)
+
+coin_list = top_100_coin_list[:number].copy()
+for i in range(number):
+    coin_list[i] = sidebar.selectbox(f"Choose Cryptocurrency {i+1}",options=top_100_coin_list, index=i)
+
 test_start = sidebar.selectbox("Back Testing Start Year",options= list(range(2015,2024)), index=len(list(range(2015,2024)))-4)
 test_end = sidebar.selectbox("Back Testing End Year",list(range(2015,2024)), index=len(list(range(2015,2024)))-1)
 submit = sidebar.button("Start Back Testing")
@@ -18,9 +27,12 @@ if test_end < test_start:
 
 
 if submit:
-    coin_list = ['bitcoin', 'litecoin', 'ethereum']
+    
     cs = CryptoSimulator(coin_list=coin_list)
+    ## Get historical Data
     histories = cs.get_historical_data()
+    
+
     num_row = len(coin_list) // 3
     last_col = len(coin_list) % 3
     st.markdown("### Historical Price Data")
@@ -35,6 +47,7 @@ if submit:
             ax.set_ylabel("Price")
             st.pyplot(fig)
     
+    ## 
     st.markdown("### Strategy By Golden Cross and Death Cross")
     total_profit, profit_histories, figures = cs.simulation(start_year=test_start, end_year=test_end)
     for j, coin in enumerate(coin_list):
