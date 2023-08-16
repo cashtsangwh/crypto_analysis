@@ -9,7 +9,7 @@ sidebar = st.sidebar
 st.set_page_config(page_title="Cryptocurrecny Investment Analysis App", layout="wide")
 st.markdown("# Cryptocurrecny Investment Analysis App")
 number = sidebar.selectbox("Number of Cryptocurrency",options= list(range(1,16)), index=0)
-
+strategy = sidebar.selectbox("Choose Strategy",options= ["cross", "crossRSI"], index=0)
 with open("./coins.json", 'r') as f:
     top_100_coin_list = json.load(f)
 
@@ -49,7 +49,7 @@ if submit:
     
     ## 
     st.markdown("### Strategy By Golden Cross and Death Cross")
-    total_profit, profit_histories, figures = cs.simulation(start_year=test_start, end_year=test_end)
+    total_profit, profit_histories, figures = cs.simulation(strategy="cross",start_year=test_start, end_year=test_end)
     for j, coin in enumerate(coin_list):
         if j % 3 == 0:
             cols = st.columns(3)
