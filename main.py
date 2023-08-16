@@ -54,6 +54,6 @@ if submit:
             ax.set_xlabel("Date")
             ax.set_ylabel("Return")
             st.pyplot(fig)
-            st.write(f"Accumulate Return: {total_profit[j]}%")
+            st.write(f"Accumulate Return: {total_profit[j]*100}%")
     
 
