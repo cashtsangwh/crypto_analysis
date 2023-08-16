@@ -93,7 +93,7 @@ class CryptoSimulator:
                     profit_rate *= row["Price"]/last_price
                     hold = False
                     last_price = row["Price"]
-                elif hold and row["Price"]/buy_price < (1-limit_loss):
+                elif hold and row["Price"]/buy_price < (1-limit_loss) and strategy != "simple_buy_hold":
                     profit_rate *= row["Price"]/last_price
                     hold = False
                     last_price = row["Price"]
