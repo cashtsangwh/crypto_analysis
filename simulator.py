@@ -21,7 +21,7 @@ class CryptoSimulator:
             a list of coins
 
         """
-        market = self.cg.get_coins_markets(vs_currency=self.currency, per_page=10, order='market_cap_desc')
+        market = self.cg.get_coins_markets(vs_currency=self.currency, per_page=100, order='market_cap_desc')
         return market
         
     
@@ -56,7 +56,9 @@ class CryptoSimulator:
         
 
     
-    def simulation(self, strategy="cross", start_year=2020, end_year=2023, limit_loss=0.05):
+
+
+    def simulation(self, strategy="cross", start_year=2020, end_year=2023, limit_loss=0.05, **kwargs):
         if self.histories is None :
             self.get_historical_data() 
         
@@ -70,8 +72,14 @@ class CryptoSimulator:
             if strategy == "cross":
                 price_ts = history.iloc[:,0]
                 price_ts_require = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
-                strategy_df, fig = strategy_by_cross(price_ts_require, short=5, long=30)
+                strategy_df, fig = strategy_by_cross(price_ts_require, **kwargs)
                 figures.append(fig)
+            elif strategy == "crossRSI":
+                price_ts = history.iloc[:,0]
+                price_ts_require = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
+                strategy_df, fig = strategy_by_cross_rsi(price_ts_require, **kwargs)
+                figures.append(fig)
+                
             hold = False
             profit_rate = 1
             buy_price = 0
@@ -107,6 +115,6 @@ if __name__ == "__main__":
     cs = CryptoSimulator()
     data = cs.get_current_data()
     market = cs.get_market_data()
-    historical = cs.get_historical_data()
-    total_profit, profit_histories = cs.simulation()
-    print(data)
+    # historical = cs.get_historical_data()
+    # total_profit, profit_histories = cs.simulation()
+    # print(data)

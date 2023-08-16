@@ -23,7 +23,7 @@ def moving_average(time_series: pd.Series, window_size=10):
     
     return time_series.rolling(window_size).mean()
 
-def strategy_by_cross(time_series:pd.Series, short:int=5, long:int=30):
+def strategy_by_cross(time_series:pd.Series, short:int=5, long:int=30, **kwargs):
     """
 
     Parameters
@@ -76,7 +76,7 @@ def strategy_by_cross(time_series:pd.Series, short:int=5, long:int=30):
     return df, fig
     
 
-def strategy_by_rsi(time_series:pd.Series, days=14):
+def strategy_by_rsi(time_series:pd.Series, days=14, **kwargs):
     """
 
     Parameters
@@ -130,7 +130,7 @@ def strategy_by_rsi(time_series:pd.Series, days=14):
     
     
     
-def strategy_by_cross_rsi(time_series:pd.Series, short:int=5, long:int=30, days=14):
+def strategy_by_cross_rsi(time_series:pd.Series, short:int=5, long:int=30, days=14, **kwargs):
     """
 
     Parameters
