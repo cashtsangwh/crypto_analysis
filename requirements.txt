@@ -3,4 +3,4 @@ numpy
 yfinance
 streamlit
 matplotlib
-pycoingeckogit
+pycoingecko
