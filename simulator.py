@@ -71,12 +71,14 @@ class CryptoSimulator:
         for history in self.histories:
             price_ts = history.iloc[:,0]
             price_ts_require = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
-            if strategy == "cross":
+            if strategy == "Cross":
                 strategy_df, fig = strategy_by_cross(price_ts_require, **kwargs)
-            elif strategy == "crossRSI":
+            elif strategy == "CrossRSI":
                 strategy_df, fig = strategy_by_cross_rsi(price_ts_require, **kwargs)
-            elif strategy == "simple_buy_hold":
+            elif strategy == "Simple_Buy_Hold":
                 strategy_df, fig = strategy_by_simple_buy_and_hold(price_ts_require, **kwargs)
+            elif strategy == "Mean_Reversion":
+                strategy_df, fig = strategy_by_mean_reversion(price_ts_require, **kwargs)
                 
             figures.append(fig)               
             hold = False
@@ -93,7 +95,7 @@ class CryptoSimulator:
                     profit_rate *= row["Price"]/last_price
                     hold = False
                     last_price = row["Price"]
-                elif hold and row["Price"]/buy_price < (1-limit_loss) and strategy != "simple_buy_hold":
+                elif hold and row["Price"]/last_price < (1-limit_loss) and strategy != "simple_buy_hold":
                     profit_rate *= row["Price"]/last_price
                     hold = False
                     last_price = row["Price"]

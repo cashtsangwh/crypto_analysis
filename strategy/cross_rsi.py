@@ -72,10 +72,19 @@ def strategy_by_cross_rsi(time_series:pd.Series, short:int=5, long:int=30, days=
     
     fig, ax = plt.subplots(4, figsize=(15,15))
     ax[0].plot(df["RSI"], label="RSI")
+    ax[0].set_title("RSI")
     ax[1].plot(df["short"], label="Short MA")
     ax[1].plot(df["long"], label="Long MA")
-    ax[2].plot(df["Price"])
-    ax[3].plot(df["Signal"] ,'-r')
+    ax[1].set_title(f"{short} and {long} Days Moving Average Line")
     ax[1].legend()
+    ax[-2].plot(df["Price"])
+    ax[-2].set_title(f"Price in Testing Period")
+    ax[-2].grid()
+    ax[-1].bar(df["Signal"].index, df["Signal"], color='red')
+    ax[-1].axhline(y=0, color='k')
+    ax[-1].grid()
+    ax[-1].set_title(f"Buy/Sell Signal")
+
+    
     fig.tight_layout()
     return df, fig

@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from strategy.utils import moving_average, moving_std, moving_std
 
-def strategy_by_simple_buy_and_hold(time_series:pd.Series, **kwargs):
+def strategy_by_mean_reversion(time_series:pd.Series, short=20, long=80, **kwargs):
     """
 
     Parameters
@@ -24,9 +25,19 @@ def strategy_by_simple_buy_and_hold(time_series:pd.Series, **kwargs):
     """
     df = pd.DataFrame()
     df["Price"] = time_series
-    df["Signal"] = 0
-    df["Signal"].iloc[0] = 1
-    df["Signal"].iloc[-1] = -1
+
+    df["short_mean"] = moving_average(time_series,short)
+    df["long_mean"] = moving_average(time_series,long)
+    
+    df["short_std"] = moving_std(time_series,short)
+    df["long_std"] = moving_std(time_series,long)
+    
+    df = df.dropna()
+    signal = pd.Series(np.zeros_like(df["short_mean"].values), index=df["Price"].index)
+    signal[(df["Price"] < df["short_mean"] - df["short_std"]) & (df["Price"] < df["long_mean"] - df["long_std"])] = 1
+    signal[(df["Price"] > df["short_mean"])] = -1
+    df["Signal"] = signal
+
     
     fig, ax = plt.subplots(2, figsize=(15,15))
     ax[-2].plot(df["Price"])
