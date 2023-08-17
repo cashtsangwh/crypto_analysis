@@ -18,7 +18,7 @@ def strategy_by_mean_reversion(time_series:pd.Series, short=20, long=80, **kwarg
     -------
     df : pd.DataFrame
         A dataframe with columns "Signal" that used to determine whether we should
-        buy all sell the asset (buy: 1, sell: -1)
+        buy or sell the asset (buy: 1, sell: -1)
     fig : TYPE
         DESCRIPTION.
 
