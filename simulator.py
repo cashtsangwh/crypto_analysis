@@ -2,7 +2,7 @@ from pycoingecko import CoinGeckoAPI
 import pandas as pd
 import datetime as dt
 import numpy as np
-from utils import *
+from strategy import *
 
 class CryptoSimulator:
     def __init__(self, coin_list=['bitcoin', 'litecoin', 'ethereum']):

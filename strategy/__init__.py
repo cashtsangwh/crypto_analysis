@@ -1,0 +1,3 @@
+from strategy.cross import strategy_by_cross
+from strategy.cross_rsi import strategy_by_cross_rsi
+from strategy.simple_buy_hold import strategy_by_simple_buy_and_hold
