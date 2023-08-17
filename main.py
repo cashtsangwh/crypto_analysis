@@ -2,6 +2,7 @@ import streamlit as st
 from simulator import CryptoSimulator
 from matplotlib import pyplot as plt
 import numpy as np
+import pandas as pd
 import json
 
 
@@ -56,7 +57,7 @@ if not submit:
     st.markdown("#### Simple_Buy_Hold")
     st.write("This is just a buy and hold strategy. Just buy it at the start of the testing period wait until the end of it")
     st.markdown("### Limit Fall(%)")
-    st.write("This is a protective mechanism. When the price of the cryptocurrency drop by the percentage that you choose, it will immediately sell it. (No use in Simple Buy Hold Strategy)")
+    st.write("This is a protective mechanism. When the price of the cryptocurrency drop by this percentage comparing to the last day, it will immediately sell it. (No use in Simple Buy Hold Strategy)")
 
 if submit:
     
@@ -64,6 +65,9 @@ if submit:
     ## Get historical Data
     histories = cs.get_historical_data()
     
+    summary = histories[0].iloc[:,:2].copy()
+    for history in histories[1:]:
+        summary = pd.merge(summary, history.iloc[:,:2].copy(), right_index=True, left_index=True, how="outer")
 
     num_row = len(coin_list) // 3
     last_col = len(coin_list) % 3
@@ -79,7 +83,8 @@ if submit:
             ax.set_ylabel("Price")
             ax.grid()
             st.pyplot(fig)
-    
+    st.markdown("### Summary Information")
+    st.write(summary.describe(percentiles=[0.01,0.05,0.1,0.25,0.5,0.75,0.9,0.95,0.99]))
     ## 
     st.markdown("### Strategy Information")
     total_profit, profit_histories, figures = cs.simulation(strategy=strategy,

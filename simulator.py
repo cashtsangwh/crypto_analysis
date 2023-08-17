@@ -37,9 +37,10 @@ class CryptoSimulator:
             to_datetime = np.vectorize(lambda x:dt.datetime.fromtimestamp(x/1000))
             time_stamp = to_datetime(history["prices"][:,0])
             df.index= time_stamp
-            df[f"{coin}_Price"] = history["prices"][:,1]
-            df[f"{coin}_Market_Caps"] = history["market_caps"][:,1]
-            df[f"{coin}_Volumes"] = history["total_volumes"][:,1]
+            df[f"{coin.title()}_Price"] = history["prices"][:,1]
+            df[f"{coin.title()}_Return(%)"] = 100*df[f"{coin.title()}_Price"].pct_change(1)
+            df[f"{coin.title()}_Market_Caps"] = history["market_caps"][:,1]
+            df[f"{coin.title()}_Volumes"] = history["total_volumes"][:,1]
             
             histories.append(df)
         
