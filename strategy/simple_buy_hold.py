@@ -9,9 +9,6 @@ def strategy_by_simple_buy_and_hold(time_series:pd.Series, **kwargs):
     ----------
     time_series : pd.Series
         The Closing Price Time series data.
-    days : int, optional
-        The number of days use to calculate the RSI. 
-        The default is 14.
 
     Returns
     -------

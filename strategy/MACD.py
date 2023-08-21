@@ -16,6 +16,8 @@ def strategy_by_MACD(time_series:pd.Series, short:int=5, long:int=30, dea_day:in
     long : int, optional
         The number of days use to calculate the shorter day moving average line. 
         The default is 30.
+    dea_dat: int, optional
+        The number of days use to calculate the DEA line.
 
     Returns
     -------

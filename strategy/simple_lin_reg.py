@@ -9,7 +9,17 @@ def strategy_by_simple_lin_reg(time_series:pd.Series, volume_series, train_price
     Parameters
     ----------
     time_series : pd.Series
-        The Closing Price Time series data.
+        The Closing Price Time series data in test period.
+    volume_series: pd.Series
+        The Volume Data Time series data in test period.
+    train_price_series:
+        The Closing Price Time series data in train period.
+    train_volume_series:
+        The Volume Data Time series data in train period.
+    train_time_len:
+        Use how many days data for the explanatory variable
+    test_time_len:
+        The target will be the average return of a certan time length
 
     Returns
     -------

@@ -10,9 +10,12 @@ def strategy_by_mean_reversion(time_series:pd.Series, short=20, long=80, **kwarg
     ----------
     time_series : pd.Series
         The Closing Price Time series data.
-    days : int, optional
-        The number of days use to calculate the RSI. 
-        The default is 14.
+    short : int, optional
+        The number of days use to calculate the shorter day moving average line. 
+        The default is 5.
+    long : int, optional
+        The number of days use to calculate the shorter day moving average line. 
+        The default is 30.
 
     Returns
     -------

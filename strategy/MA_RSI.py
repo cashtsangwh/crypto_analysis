@@ -10,6 +10,12 @@ def strategy_by_MA_RSI(time_series:pd.Series, short:int=5, long:int=30, days=14,
     ----------
     time_series : pd.Series
         The Closing Price Time series data.
+    short : int, optional
+        The number of days use to calculate the shorter day moving average line. 
+        The default is 5.
+    long : int, optional
+        The number of days use to calculate the shorter day moving average line. 
+        The default is 30.
     days : int, optional
         The number of days use to calculate the RSI. 
         The default is 14.
