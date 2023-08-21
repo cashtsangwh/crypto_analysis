@@ -10,19 +10,27 @@ sidebar = st.sidebar
 st.set_page_config(page_title="Cryptocurrecny Investment Analysis App", layout="wide")
 st.markdown("# Cryptocurrecny Investment Analysis App")
 number = sidebar.selectbox("Number of Cryptocurrency",options= list(range(1,16)), index=0)
-strategy = sidebar.selectbox("Choose Strategy",options= ["Cross", "CrossRSI", "Simple_Buy_Hold", "Mean_Reversion"], index=0)
+strategy = sidebar.selectbox("Choose Strategy",options= ["MA", "MA_RSI", "RSI", "Mean_Reversion", "Linear_Regression", "MACD", "Simple_Buy_Hold"], index=0)
 limit_fall = sidebar.selectbox("Limit Fall(%)",options= list(range(1,50)), index=0)
 short = 0
 long = 0
 days = 0
-
-if strategy == "Cross" or strategy == "Mean_Reversion":
-    short=sidebar.selectbox("Choose Days for Short Moving Average",options= list(range(5,155,5)), index=0)
-    long=sidebar.selectbox("Choose Days for Long Moving Average",options= list(range(5,155,5)), index=4)
-elif strategy == "CrossRSI":
-    short=sidebar.selectbox("Choose Days for Short Moving Average",options= list(range(5,155,5)), index=0)
-    long=sidebar.selectbox("Choose Days for Long Moving Average",options= list(range(5,155,5)), index=4)
-    days =sidebar.selectbox("Choose Days for RSI",options= list(range(5,40,1)), index=9)
+train_time_len = 0
+test_time_len = 0
+dea_day = 0
+if strategy == "MA" or strategy == "Mean_Reversion" or strategy == "MACD" or strategy == "MA_RSI":
+    short=sidebar.selectbox("Choose Days for Short Moving Average",options= list(range(2,201,1)), index=5)
+    long=sidebar.selectbox("Choose Days for Long Moving Average",options= list(range(2,201,1)), index=28)
+    if strategy == "MACD":
+        dea_day = sidebar.selectbox("Choose Days for DEA",options= list(range(2,155,1)), index=7)
+    if strategy == "MA_RSI":
+        days = sidebar.selectbox("Choose Days for RSI Calculation",options= list(range(2,50,1)), index=7)
+elif strategy == "RSI":
+    short=sidebar.selectbox("Choose Days for Short RSI",options= list(range(2,201,1)), index=4)
+    long=sidebar.selectbox("Choose Days for Long RSI",options= list(range(2,201,1)), index=14)
+elif strategy == "Linear_Regression":
+    train_time_len=sidebar.selectbox("Choose Time Length for Training",options= list(range(3,50,1)), index=6)
+    test_time_len=sidebar.selectbox("Choose Time Length for Target",options= list(range(1,50,1)), index=0)
 
 
 with open("./coins.json", 'r') as f:
@@ -56,7 +64,7 @@ if not submit:
     st.write("You need to set the number of days for calculating Short/Long Moving Average")
     st.markdown("#### Simple_Buy_Hold")
     st.write("This is just a buy and hold strategy. Just buy it at the start of the testing period wait until the end of it")
-    st.markdown("### Limit Fall(%)")
+    st.markdown("#### Limit Fall(%)")
     st.write("This is a protective mechanism. When the price of the cryptocurrency drop by this percentage comparing to the last day, it will immediately sell it. (No use in Simple Buy Hold Strategy)")
 
 if submit:
@@ -93,7 +101,10 @@ if submit:
                                                             end_year=test_end, 
                                                             short=short, 
                                                             long=long, 
-                                                            days=days)
+                                                            days=days,
+                                                            train_time_len=train_time_len,
+                                                            test_time_len=test_time_len,
+                                                            dea_day=dea_day,)
     for j, coin in enumerate(coin_list):
         if j % 3 == 0:
             cols = st.columns(3)

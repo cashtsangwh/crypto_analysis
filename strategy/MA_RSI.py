@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from strategy.utils import moving_average
 
-def strategy_by_cross_rsi(time_series:pd.Series, short:int=5, long:int=30, days=14, **kwargs):
+def strategy_by_MA_RSI(time_series:pd.Series, short:int=5, long:int=30, days=14, **kwargs):
     """
 
     Parameters
@@ -64,7 +64,7 @@ def strategy_by_cross_rsi(time_series:pd.Series, short:int=5, long:int=30, days=
     
 
     df["cross_Signal"] = (golden_cross.fillna(0).astype(np.int32) - death_cross.fillna(0).astype(np.int32))
-    df["Signal"] = df["rsi_Signal"] + 1.5*df["cross_Signal"]
+    df["Signal"] = df["rsi_Signal"] + 2*df["cross_Signal"]
     
     df["Signal"].loc[df["Signal"]==1] = 0
     df["Signal"].loc[df["Signal"]<0] = -1

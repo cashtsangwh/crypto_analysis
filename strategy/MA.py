@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from strategy.utils import moving_average
 
-def strategy_by_cross(time_series:pd.Series, short:int=5, long:int=30, **kwargs):
+def strategy_by_MA(time_series:pd.Series, short:int=5, long:int=30, **kwargs):
     """
 
     Parameters

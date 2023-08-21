@@ -71,16 +71,26 @@ class CryptoSimulator:
         
         for history in self.histories:
             price_ts = history.iloc[:,0]
-            price_ts_require = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
-            if strategy == "Cross":
-                strategy_df, fig = strategy_by_cross(price_ts_require, **kwargs)
-            elif strategy == "CrossRSI":
-                strategy_df, fig = strategy_by_cross_rsi(price_ts_require, **kwargs)
+            volume_ts = history.iloc[:,2]
+            price_ts_test = price_ts[(price_ts.index.year >= start_year) & (price_ts.index.year <= end_year)]
+            volume_ts_test = volume_ts[(volume_ts.index.year >= start_year) & (volume_ts.index.year <= end_year)]
+            price_ts_train = price_ts[(price_ts.index.year < start_year)]
+            volume_ts_train = volume_ts[(volume_ts.index.year < start_year)]
+            if strategy == "MA":
+                strategy_df, fig = strategy_by_MA(price_ts_test, **kwargs)
+            elif strategy == "RSI":
+                strategy_df, fig = strategy_by_RSI(price_ts_test, **kwargs)
+            elif strategy == "MA_RSI":
+                strategy_df, fig = strategy_by_MA_RSI(price_ts_test, **kwargs)
             elif strategy == "Simple_Buy_Hold":
-                strategy_df, fig = strategy_by_simple_buy_and_hold(price_ts_require, **kwargs)
+                strategy_df, fig = strategy_by_simple_buy_and_hold(price_ts_test, **kwargs)
             elif strategy == "Mean_Reversion":
-                strategy_df, fig = strategy_by_mean_reversion(price_ts_require, **kwargs)
-                
+                strategy_df, fig = strategy_by_mean_reversion(price_ts_test, **kwargs)
+            elif strategy == "Linear_Regression":   
+                strategy_df, fig = strategy_by_simple_lin_reg(price_ts_test, volume_ts_test, price_ts_train, volume_ts_train, **kwargs)
+            elif strategy == "MACD":
+                strategy_df, fig = strategy_by_MACD(price_ts_test, **kwargs)
+            
             figures.append(fig)               
             hold = False
             profit_rate = 1
