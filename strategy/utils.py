@@ -65,7 +65,7 @@ def moving_std(time_series: pd.Series, window_size=10):
     
     return time_series.rolling(window_size).std()
 
-def lin_reg(time_dataframe, test_time_dataframe, train_time_len=10):
+def lin_reg(time_dataframe, test_time_dataframe, explan_time_len=10):
     from sklearn.linear_model import LinearRegression 
     
     variable = time_dataframe.values.shape[1]-1
@@ -75,22 +75,26 @@ def lin_reg(time_dataframe, test_time_dataframe, train_time_len=10):
     matrix = []
     target = []
     
-    for i in range(train_time_len, len(time_dataframe)):
-        y = time_dataframe.iloc[i-train_time_len,variable]
+    for i in range(explan_time_len, len(time_dataframe)):
+        y = time_dataframe.iloc[i-1,variable]
         if not np.isnan(y):
-            matrix.append(time_dataframe.iloc[i-train_time_len:i,:variable].values.reshape(-1))
+            matrix.append(time_dataframe.iloc[i-explan_time_len:i,:variable].values.reshape(-1))
             target.append(y)
         else:
             break
     
     lr = LinearRegression()
     lr.fit(matrix, target)
-
-    pred = [np.nan]*train_time_len
-    test_time_dataframe = test_time_dataframe.copy()
-    test_time_dataframe.to_csv("Test.csv")
-    for i in range(train_time_len, len(test_time_dataframe)):
-        x = test_time_dataframe.iloc[i-train_time_len:i,:variable].values.reshape(-1)
+    
+    # For debug checking use
+    # train = pd.DataFrame(matrix)
+    # train["Target"] = target
+    # train.to_csv("Train.csv")
+    
+    pred = [np.nan]*explan_time_len
+    
+    for i in range(explan_time_len, len(test_time_dataframe)):
+        x = test_time_dataframe.iloc[i-explan_time_len:i,:variable].values.reshape(-1)
         try:
             pred.append(lr.predict([x]))
         except:

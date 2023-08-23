@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from strategy.utils import lin_reg
 
-def strategy_by_simple_lin_reg(time_series:pd.Series, volume_series, train_price_series, train_volume_series, train_time_len, test_time_len, **kwargs):
+def strategy_by_simple_lin_reg(time_series:pd.Series, volume_series, train_price_series, train_volume_series, explan_time_len, test_time_len, **kwargs):
     """
 
     Parameters
@@ -16,7 +16,7 @@ def strategy_by_simple_lin_reg(time_series:pd.Series, volume_series, train_price
         The Closing Price Time series data in train period.
     train_volume_series:
         The Volume Data Time series data in train period.
-    train_time_len:
+    explan_time_len:
         Use how many days data for the explanatory variable
     test_time_len:
         The target will be the average return of a certan time length
@@ -39,7 +39,8 @@ def strategy_by_simple_lin_reg(time_series:pd.Series, volume_series, train_price
     train_df["Return"] = train_price_series.pct_change(1)
     train_df["Volume"] = train_volume_series
     train_df["Target"] = train_price_series.pct_change(test_time_len).shift(-test_time_len)
-    pred = lin_reg(train_df, df.loc[:,["Return","Volume"]], train_time_len)
+    # train_df.to_csv("train_raw.csv") # for debug checking use
+    pred = lin_reg(train_df, df.loc[:,["Return","Volume"]], explan_time_len)
     
     df["Signal"] = 0
     df["Signal"][pred > 0] = 1
