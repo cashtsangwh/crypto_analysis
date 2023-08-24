@@ -1,6 +1,6 @@
 pandas
 numpy
-yfinance
 streamlit
 matplotlib
 pycoingecko
+scikit-learn

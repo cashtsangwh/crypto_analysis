@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-
+from sklearn.linear_model import LinearRegression 
 
 def moving_average(time_series: pd.Series, window_size=10):
     """
@@ -66,7 +66,7 @@ def moving_std(time_series: pd.Series, window_size=10):
     return time_series.rolling(window_size).std()
 
 def lin_reg(time_dataframe, test_time_dataframe, explan_time_len=10):
-    from sklearn.linear_model import LinearRegression 
+    
     
     variable = time_dataframe.values.shape[1]-1
 

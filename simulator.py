@@ -13,7 +13,7 @@ class CryptoSimulator:
     
     def get_market_data(self):
         """
-        Get Top 10 Coins in Market Data according to its market capacity 
+        Get Top 100 Coins in Market Data according to its market capacity 
 
         Returns
         -------
