@@ -11,7 +11,7 @@ st.set_page_config(page_title="Cryptocurrecny Investment Analysis App", layout="
 st.markdown("# Cryptocurrecny Investment Analysis App")
 number = sidebar.selectbox("Number of Cryptocurrency",options= list(range(1,16)), index=0)
 strategy = sidebar.selectbox("Choose Strategy",options= ["MA", "RSI", "Mean_Reversion", "Linear_Regression", "MACD", "Simple_Buy_Hold"], index=0)
-limit_fall = sidebar.selectbox("Limit Fall(%)",options= list(range(1,50)), index=0)
+limit_fall = sidebar.selectbox("Limit Fall(%)",options= list(range(1,101)), index=0)
 short = 0
 long = 0
 days = 0
@@ -22,14 +22,14 @@ if strategy == "MA" or strategy == "Mean_Reversion" or strategy == "MACD":
     short=sidebar.selectbox("Choose Days for Short Moving Average",options= list(range(2,201,1)), index=5)
     long=sidebar.selectbox("Choose Days for Long Moving Average",options= list(range(2,201,1)), index=28)
     if strategy == "MACD":
-        dea_day = sidebar.selectbox("Choose Days for DEA",options= list(range(2,155,1)), index=7)
+        dea_day = sidebar.selectbox("Choose Days for DEA",options= list(range(2,201,1)), index=7)
 
 elif strategy == "RSI":
     short=sidebar.selectbox("Choose Days for Short RSI",options= list(range(2,201,1)), index=4)
     long=sidebar.selectbox("Choose Days for Long RSI",options= list(range(2,201,1)), index=14)
 elif strategy == "Linear_Regression":
-    explan_time_len=sidebar.selectbox("Choose Time Length for Explanatory Variable",options= list(range(3,50,1)), index=6)
-    test_time_len=sidebar.selectbox("Choose Time Length for Target",options= list(range(1,50,1)), index=0)
+    explan_time_len=sidebar.selectbox("Choose Time Length for Explanatory Variable",options= list(range(3,101,1)), index=6)
+    test_time_len=sidebar.selectbox("Choose Time Length for Target",options= list(range(1,101,1)), index=0)
 
 
 with open("./coins.json", 'r') as f:
